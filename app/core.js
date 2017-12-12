@@ -2,6 +2,8 @@ var express = require('express');
 var { Template } = require('./src/template.js');
 var app = express();
 
+app.use('/public', express.static(__dirname + '/dist'));
+
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.end('Vous êtes à l\'accueil');
