@@ -46,9 +46,32 @@ app.post('/api/register', urlParser, (req, res) => {
 });
 
 app.delete('/api/delete', urlParser, (req, res) => {
-  console.log(req.body)
-  res.writeHead(201, {'Content-Type': 'application/json; charset=utf-8'});
-  res.end(`{"code": 201, "message":"Bonjour"}`);
+  let data;
+  try {
+    let dataText = fs.readFileSync(config.dbPath, { encoding : 'utf8'});
+    data = csvjson.toSchemaObject(dataText, config.csvOptions);
+    if (!Array.isArray(req.body.deleted))
+    {
+      req.body.deleted = [req.body.deleted]
+    }
+    req.body.deleted.reverse().forEach(item => {
+      data.splice(item, 1);
+    })
+  } catch (exception) {
+    data = [];
+  }
+
+  let csvData = json2csv({data: data, fields: config.fields, del: config.csvOptions.delimiter, quotes: config.csvOptions.quote})
+  fs.writeFile(config.dbPath, csvData, (err) => {
+    if (err) throw err;
+  });
+
+  let response = {
+    "code": 200,
+    "data": data
+  }
+  res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+  res.end(JSON.stringify(response));
 });
 
 app.get('/api/list', (req, res) => {
@@ -56,7 +79,6 @@ app.get('/api/list', (req, res) => {
   try {
     let dataText = fs.readFileSync(config.dbPath, { encoding : 'utf8'});
     data = csvjson.toSchemaObject(dataText, config.csvOptions);
-    console.log(data);
   } catch (exception) {
     data = [];
   }
