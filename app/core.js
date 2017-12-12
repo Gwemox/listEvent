@@ -5,8 +5,8 @@ var app = express();
 app.use('/public', express.static(__dirname + '/dist'));
 
 app.get('/', function(req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Vous êtes à l\'accueil');
+  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+  res.end((new Template('index')).html);
 });
 
 app.get('*', function(req, res){
