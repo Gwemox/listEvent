@@ -1,0 +1,14 @@
+{
+  "fields": [
+    "pseudo",
+    "email",
+    "firstname",
+    "lastname",
+    "address"
+  ],
+  "dbPath": "database.csv",
+  "csvOptions": {
+    "delimiter"   : ",",
+    "quote"       : "\""
+  }
+}
