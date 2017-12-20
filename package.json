@@ -13,10 +13,12 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-beta.2",
+    "consolidate": "^0.15.0",
     "csvjson": "^5.0.0",
     "express": "^4.16.2",
     "fast-csv": "^2.4.1",
     "gulp": "^3.9.1",
+    "hamljs": "^0.6.2",
     "jquery": "^3.2.1",
     "json2csv": "^3.11.5",
     "popper.js": "^1.12.9"
