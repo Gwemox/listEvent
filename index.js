@@ -1,1 +1,1 @@
-var core = require('./app/core.js');
+var core = require('./app/src/app.js');

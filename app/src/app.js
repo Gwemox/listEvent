@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var { Template } = require('./src/template.js');
-var config = require('./src/config.json');
+var config = require('./config.json');
 var fs = require('fs');
 var app = express();
 
@@ -10,11 +9,13 @@ var csvjson = require('csvjson');
 var urlParser = bodyParser.urlencoded({extended: true})
 
 const respondWithTemplate = (res, name, httpCode = 200) => {
-    res.writeHead(httpCode, {'Content-Type': 'text/html; charset=utf-8'});
-    res.end((new Template(name)).html);
+    res.render(name + '.haml');
 }
 
-app.use('/public', express.static(__dirname + '/dist'));
+app.engine('haml', require('consolidate').haml);
+app.set('views', __dirname + '/views');
+console.log(__dirname + '../dist')
+app.use('/public', express.static(__dirname + '/../dist'));
 
 app.get('/', (req, res) => {
   respondWithTemplate(res, 'index');
@@ -91,8 +92,7 @@ app.get('/api/list', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.writeHead(404, {'Content-Type': 'text/html; charset=utf-8'});
-  res.end((new Template('errors/404')).html);
+  respondWithTemplate(res, 'errors/404');
 });
 
 app.listen(1313);
